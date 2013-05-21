@@ -13,8 +13,10 @@ import com.xinlan.controller.R;
 
 public class Controller {
 	private MainView context;
+	private Box mBox;
+
 	private int padLeft = 30;
-	private int padTop = 30;
+	private int padTop = 60;
 	private boolean isBarFocus = false;
 	private float down_x, down_y;
 
@@ -28,6 +30,7 @@ public class Controller {
 
 	public Controller(MainView context) {
 		this.context = context;
+		mBox = context.mBox;
 		mBottomBmp = BitmapFactory.decodeResource(context.getResources(),
 				R.drawable.controller_bottom);// ÔØÈëÒ¡¸Ëµ××ùÍ¼Æ¬
 		mBarBmp = BitmapFactory.decodeResource(context.getResources(),
@@ -67,16 +70,22 @@ public class Controller {
 		if (isBarFocus) {
 			float delta_y = bar_y - bottom_y;
 			float delta_x = bar_x - bottom_x;
-			if (delta_y >= -delta_x && delta_y >= delta_x) {
-				//System.out.println("ÏÂ");
-			}else if (delta_y < -(delta_x) && delta_y >= delta_x) {
-				//System.out.println("×ó");
-			}else if (delta_y < -delta_x && delta_y < delta_x) {
-				//System.out.println("ÉÏ");
-			}else if (delta_y>= -delta_x && delta_y < delta_x) {
-				//System.out.println("ÓÒ");
-			}else{
-				//System.out.println("Î´Öª");
+			if(mBox==null){
+				mBox=context.mBox;
+			}
+			if (delta_y > -delta_x && delta_y > delta_x) {
+				// System.out.println("ÏÂ");
+				mBox.box_y += mBox.dy;
+			} else if (delta_y < -(delta_x) && delta_y > delta_x) {
+				// System.out.println("×ó");
+				mBox.box_x -= mBox.dx;
+			} else if (delta_y < -delta_x && delta_y < delta_x) {
+				// System.out.println("ÉÏ");
+				mBox.box_y -= mBox.dy;
+			} else if (delta_y > -delta_x && delta_y < delta_x) {
+				// System.out.println("ÓÒ");
+				mBox.box_x += mBox.dx;
+			} else {
 			}
 		}
 	}

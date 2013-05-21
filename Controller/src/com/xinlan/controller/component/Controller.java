@@ -63,6 +63,24 @@ public class Controller {
 		canvas.drawBitmap(mBarBmp, srcBarRect, dstBarRect, null);
 	}
 
+	public void logic() {
+		if (isBarFocus) {
+			float delta_y = bar_y - bottom_y;
+			float delta_x = bar_x - bottom_x;
+			if (delta_y >= -delta_x && delta_y >= delta_x) {
+				//System.out.println("下");
+			}else if (delta_y < -(delta_x) && delta_y >= delta_x) {
+				//System.out.println("左");
+			}else if (delta_y < -delta_x && delta_y < delta_x) {
+				//System.out.println("上");
+			}else if (delta_y>= -delta_x && delta_y < delta_x) {
+				//System.out.println("右");
+			}else{
+				//System.out.println("未知");
+			}
+		}
+	}
+
 	/**
 	 * 触摸事件处理
 	 * 

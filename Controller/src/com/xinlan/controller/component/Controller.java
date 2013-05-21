@@ -47,5 +47,5 @@ public class Controller {
 		canvas.drawBitmap(mBottomBmp, srcBottomRect, dstBottomRect, null);
 		canvas.drawBitmap(mBarBmp, srcBarRect, dstBarRect, null);
 	}
-
+	
 }// end class

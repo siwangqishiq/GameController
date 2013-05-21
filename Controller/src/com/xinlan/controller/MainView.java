@@ -23,7 +23,7 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 	private Resources res = this.getResources();
 
 	public static int GAME_STATE = 1;
-	
+
 	public Controller mController;
 
 	public MainView(Context context) {
@@ -95,6 +95,7 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		mController.onTouch(event);
 		return true;
 	}
 

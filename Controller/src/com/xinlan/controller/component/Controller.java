@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.support.v4.view.MotionEventCompat;
+import android.view.MotionEvent;
 
 import com.xinlan.controller.MainView;
 import com.xinlan.controller.R;
@@ -13,12 +15,16 @@ public class Controller {
 	private MainView context;
 	private int padLeft = 30;
 	private int padTop = 30;
+	private boolean isBarFocus = false;
+	private float down_x, down_y;
 
 	private Bitmap mBottomBmp, mBarBmp;
 	private float bottom_x, bottom_y, bottom_width, bottom_height;
 	private float bar_x, bar_y, bar_width, bar_height;
 	private Rect srcBottomRect, srcBarRect;
 	private RectF dstBottomRect, dstBarRect;
+	private RectF barBoundRect;// bar活动范围
+	private float barRadius, bottomRadius;
 
 	public Controller(MainView context) {
 		this.context = context;
@@ -41,11 +47,63 @@ public class Controller {
 		bar_y = bottom_y = dstBottomRect.centerY();
 		dstBarRect = new RectF(bar_x - bar_width / 2, bar_y - bar_height / 2,
 				bar_x + bar_width / 2, bar_y + bar_height / 2);
+		float bar_width_pad = bar_width - 10;
+		barBoundRect = new RectF(bar_x - bar_width_pad / 2, bar_y
+				- bar_width_pad / 2, bar_x + bar_width_pad / 2, bar_y
+				+ bar_width_pad / 2);
+		barRadius = dstBarRect.width() / 2;
+		bottomRadius = dstBarRect.width() / 2;
+
 	}
 
 	public void draw(Canvas canvas) {
 		canvas.drawBitmap(mBottomBmp, srcBottomRect, dstBottomRect, null);
+		dstBarRect.set(bar_x - bar_width / 2, bar_y - bar_height / 2, bar_x
+				+ bar_width / 2, bar_y + bar_height / 2);
 		canvas.drawBitmap(mBarBmp, srcBarRect, dstBarRect, null);
 	}
-	
+
+	/**
+	 * 触摸事件处理
+	 * 
+	 * @param event
+	 */
+	public void onTouch(MotionEvent event) {
+		float x1 = event.getX(0);
+		float y1 = event.getY(0);
+
+		switch (MotionEventCompat.getActionMasked(event)) {
+		case MotionEvent.ACTION_DOWN:
+			if (MathUtils.isInCircle(x1, y1, dstBarRect.centerX(),
+					dstBarRect.centerY(), barRadius)) {
+				isBarFocus = true;
+				down_x = x1;
+				down_y = y1;
+			}
+			break;
+		case MotionEvent.ACTION_MOVE:
+			if (isBarFocus) {
+				bar_x = bottom_x + (x1 - down_x);
+				bar_y = bottom_y + (y1 - down_y);
+				if (bar_x > barBoundRect.right)
+					bar_x = barBoundRect.right;
+				if (bar_x < barBoundRect.left)
+					bar_x = barBoundRect.left;
+				if (bar_y < barBoundRect.top)
+					bar_y = barBoundRect.top;
+				if (bar_y > barBoundRect.bottom)
+					bar_y = barBoundRect.bottom;
+			}
+			break;
+		case MotionEvent.ACTION_UP:
+			isBarFocus = false;
+			bar_x = bottom_x;
+			bar_y = bottom_y;
+			break;
+		case MotionEvent.ACTION_POINTER_DOWN:// 第二只手指按下
+			break;
+		case MotionEvent.ACTION_POINTER_UP:// 第二只手指抬起
+			break;
+		}// end switch
+	}
 }// end class

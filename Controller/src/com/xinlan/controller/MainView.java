@@ -82,6 +82,7 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 	}
 
 	public void logic() {
+		mBackground.logic();
 		mController.logic();
 	}
 
@@ -91,7 +92,7 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 			logic();
 			draw();
 			long end = System.currentTimeMillis();
-			// System.out.println(end - start);
+			System.out.println(end - start);
 			try {
 				if (end - start < 5) {
 					Thread.sleep(5 - (end - start));

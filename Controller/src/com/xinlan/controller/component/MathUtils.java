@@ -30,4 +30,4 @@ public class MathUtils {
 		}
 		return false;
 	}
-}
+}//end class

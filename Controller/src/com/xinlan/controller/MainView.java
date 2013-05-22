@@ -1,5 +1,6 @@
 package com.xinlan.controller;
 
+import com.xinlan.controller.component.Background;
 import com.xinlan.controller.component.Box;
 import com.xinlan.controller.component.Controller;
 
@@ -25,8 +26,9 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 
 	public static int GAME_STATE = 1;
 	
+	public Background mBackground;
 	public Box mBox;
-	public Controller mController;
+	public Controller mController;	
 
 	public MainView(Context context) {
 		super(context);
@@ -53,6 +55,7 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 	/**
 	 */
 	public void init() {
+		mBackground = new Background(this);
 		mController = new Controller(this);
 		mBox = new Box(this);
 	}
@@ -64,6 +67,7 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 				switch (GAME_STATE) {
 				case 1:
 					canvas.drawColor(Color.WHITE);
+					mBackground.draw(canvas);
 					mBox.draw(canvas);
 					mController.draw(canvas);
 					break;

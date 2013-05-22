@@ -35,8 +35,9 @@ public class Controller {
 				R.drawable.controller_bottom);// 载入摇杆底座图片
 		mBarBmp = BitmapFactory.decodeResource(context.getResources(),
 				R.drawable.controller_top);// 载入摇杆图片
-
-		bottom_width = bottom_height = MainView.screenW / 3;// 设定底座高度与宽度
+		int cube_len = MainView.screenW > MainView.screenH ? MainView.screenH
+				: MainView.screenW;
+		bottom_width = bottom_height = cube_len / 3;// 设定底座高度与宽度
 		bar_width = bar_height = bottom_width / 2;// 摇杆宽高 与底座按1:2的比例
 
 		// 源图像矩形
@@ -50,7 +51,7 @@ public class Controller {
 		bar_y = bottom_y = dstBottomRect.centerY();
 		dstBarRect = new RectF(bar_x - bar_width / 2, bar_y - bar_height / 2,
 				bar_x + bar_width / 2, bar_y + bar_height / 2);
-		float bar_width_pad = bar_width - 10;
+		float bar_width_pad = bar_width - 20;
 		barBoundRect = new RectF(bar_x - bar_width_pad / 2, bar_y
 				- bar_width_pad / 2, bar_x + bar_width_pad / 2, bar_y
 				+ bar_width_pad / 2);
@@ -73,29 +74,28 @@ public class Controller {
 			if (mBox == null) {
 				mBox = context.mBox;
 			}
-			if (delta_y > -delta_x && delta_y > delta_x) {//下方向
+			if (delta_y > -delta_x && delta_y > delta_x) {// 下方向
 				mBox.box_y += mBox.dy;
 			}
-			if (delta_y < -(delta_x) && delta_y > delta_x) {//左方向
+			if (delta_y < -(delta_x) && delta_y > delta_x) {// 左方向
 				mBox.box_x -= mBox.dx;
 			}
-			if (delta_y < -delta_x && delta_y < delta_x) {//上方向
+			if (delta_y < -delta_x && delta_y < delta_x) {// 上方向
 				mBox.box_y -= mBox.dy;
 			}
-			if (delta_y > -delta_x && delta_y < delta_x) {//	右
+			if (delta_y > -delta_x && delta_y < delta_x) {// 右
 				mBox.box_x += mBox.dx;
 			}
-			//斜边情况
+			// 斜边情况
 			if (delta_y == delta_x) {
 				if (delta_x > 0) {
 					mBox.box_x += mBox.dx;
 					mBox.box_y += mBox.dy;
-				} else if (delta_x < 0){
+				} else if (delta_x < 0) {
 					mBox.box_x -= mBox.dx;
 					mBox.box_y -= mBox.dy;
 				}
 			}
-			
 			if (delta_y == -delta_x) {
 				if (delta_x > 0) {
 					mBox.box_x += mBox.dx;
@@ -146,6 +146,7 @@ public class Controller {
 			bar_y = bottom_y;
 			break;
 		case MotionEvent.ACTION_POINTER_DOWN:// 第二只手指按下
+			
 			break;
 		case MotionEvent.ACTION_POINTER_UP:// 第二只手指抬起
 			break;

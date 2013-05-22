@@ -70,22 +70,40 @@ public class Controller {
 		if (isBarFocus) {
 			float delta_y = bar_y - bottom_y;
 			float delta_x = bar_x - bottom_x;
-			if(mBox==null){
-				mBox=context.mBox;
+			if (mBox == null) {
+				mBox = context.mBox;
 			}
-			if (delta_y > -delta_x && delta_y > delta_x) {
-				// System.out.println("下");
+			if (delta_y > -delta_x && delta_y > delta_x) {//下方向
 				mBox.box_y += mBox.dy;
-			} else if (delta_y < -(delta_x) && delta_y > delta_x) {
-				// System.out.println("左");
+			}
+			if (delta_y < -(delta_x) && delta_y > delta_x) {//左方向
 				mBox.box_x -= mBox.dx;
-			} else if (delta_y < -delta_x && delta_y < delta_x) {
-				// System.out.println("上");
+			}
+			if (delta_y < -delta_x && delta_y < delta_x) {//上方向
 				mBox.box_y -= mBox.dy;
-			} else if (delta_y > -delta_x && delta_y < delta_x) {
-				// System.out.println("右");
+			}
+			if (delta_y > -delta_x && delta_y < delta_x) {//	右
 				mBox.box_x += mBox.dx;
-			} else {
+			}
+			//斜边情况
+			if (delta_y == delta_x) {
+				if (delta_x > 0) {
+					mBox.box_x += mBox.dx;
+					mBox.box_y += mBox.dy;
+				} else if (delta_x < 0){
+					mBox.box_x -= mBox.dx;
+					mBox.box_y -= mBox.dy;
+				}
+			}
+			
+			if (delta_y == -delta_x) {
+				if (delta_x > 0) {
+					mBox.box_x += mBox.dx;
+					mBox.box_y -= mBox.dy;
+				} else if (delta_x < 0) {
+					mBox.box_x -= mBox.dx;
+					mBox.box_y += mBox.dy;
+				}
 			}
 		}
 	}

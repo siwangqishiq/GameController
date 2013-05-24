@@ -15,8 +15,8 @@ public class Controller {
 	private MainView context;
 	private Box mBox;
 
-	private int padLeft = 30;
-	private int padTop = 60;
+	private int padLeft = 20;
+	private int padTop = 30;
 	private boolean isBarFocus = false;
 	private float down_x, down_y;
 
@@ -44,6 +44,7 @@ public class Controller {
 		srcBottomRect = new Rect(0, 0, mBottomBmp.getWidth(),
 				mBottomBmp.getHeight());
 		srcBarRect = new Rect(0, 0, mBarBmp.getWidth(), mBarBmp.getHeight());
+		padTop += MainView.screenH/2;
 		// Ä¿±ê¾ØÐÎ
 		dstBottomRect = new RectF(padLeft, padTop, padLeft + bottom_width,
 				padTop + bottom_height);

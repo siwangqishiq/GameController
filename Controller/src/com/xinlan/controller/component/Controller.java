@@ -17,6 +17,7 @@ public class Controller {
 
 	private int padLeft = 20;
 	private int padTop = 30;
+
 	private boolean isBarFocus = false;
 	private float down_x, down_y;
 
@@ -28,6 +29,19 @@ public class Controller {
 	private RectF barBoundRect;// bar活动范围
 	private float barRadius, bottomRadius;
 
+	private boolean isAPressed=false;
+	private boolean isBPressed = false;
+	private int button_pad_right = 20;
+	private int button_pad_bottom = 30;
+	private Bitmap mButtonBmp;
+	private float buttonWidth;
+	private float buttonA_x, buttonA_y, buttonB_x, buttonB_y;
+	private float buttonA_left, buttonA_top, buttonB_left, buttonB_top;
+	private Rect srcButtonA, srcButtonB;
+	private RectF dstButtonA, dstButtonB;
+	private Rect srcButtonPressedA, srcButtonPressedB;
+	private float buttonRadius;
+
 	public Controller(MainView context) {
 		this.context = context;
 		mBox = context.mBox;
@@ -35,16 +49,19 @@ public class Controller {
 				R.drawable.controller_bottom);// 载入摇杆底座图片
 		mBarBmp = BitmapFactory.decodeResource(context.getResources(),
 				R.drawable.controller_top);// 载入摇杆图片
+		mButtonBmp = BitmapFactory.decodeResource(context.getResources(),
+				R.drawable.cotroller_button);// 按钮
 		int cube_len = MainView.screenW > MainView.screenH ? MainView.screenH
 				: MainView.screenW;
 		bottom_width = bottom_height = cube_len / 3;// 设定底座高度与宽度
-		bar_width = bar_height = bottom_width / 2;// 摇杆宽高 与底座按1:2的比例
+		buttonWidth = bar_width = bar_height = bottom_width / 2;// 摇杆宽高
+																// 与底座按1:2的比例
 
 		// 源图像矩形
 		srcBottomRect = new Rect(0, 0, mBottomBmp.getWidth(),
 				mBottomBmp.getHeight());
 		srcBarRect = new Rect(0, 0, mBarBmp.getWidth(), mBarBmp.getHeight());
-		padTop += MainView.screenH/2;
+		padTop += MainView.screenH / 2;
 		// 目标矩形
 		dstBottomRect = new RectF(padLeft, padTop, padLeft + bottom_width,
 				padTop + bottom_height);
@@ -59,6 +76,27 @@ public class Controller {
 		barRadius = dstBarRect.width() / 2;
 		bottomRadius = dstBarRect.width() / 2;
 
+		srcButtonA = new Rect(0, 0, mButtonBmp.getWidth() / 2,
+				mButtonBmp.getHeight());
+		srcButtonB = new Rect(0, 0, mButtonBmp.getWidth() / 2,
+				mButtonBmp.getHeight());
+		srcButtonPressedA = new Rect(mButtonBmp.getWidth() / 2, 0,
+				mButtonBmp.getWidth(), mButtonBmp.getHeight());
+		srcButtonPressedB = new Rect(mButtonBmp.getWidth() / 2, 0,
+				mButtonBmp.getWidth(), mButtonBmp.getHeight());
+		buttonRadius = buttonWidth / 2;
+		buttonB_x = MainView.screenW - (buttonRadius + button_pad_right);
+		buttonB_y = MainView.screenH - (buttonRadius + button_pad_bottom);
+		buttonB_left = buttonB_x - buttonRadius;
+		buttonB_top = buttonB_y - buttonRadius;
+		dstButtonB = new RectF(buttonB_left, buttonB_top, buttonB_left
+				+ buttonWidth, buttonB_top + buttonWidth);
+		buttonA_x = buttonB_left - buttonRadius ;
+		buttonA_y = buttonB_top - buttonRadius ;
+		buttonA_left = buttonA_x - buttonRadius;
+		buttonA_top = buttonA_y - buttonRadius;
+		dstButtonA = new RectF(buttonA_left, buttonA_top, buttonA_left
+				+ buttonWidth, buttonA_top + buttonWidth);
 	}
 
 	public void draw(Canvas canvas) {
@@ -66,6 +104,17 @@ public class Controller {
 		dstBarRect.set(bar_x - bar_width / 2, bar_y - bar_height / 2, bar_x
 				+ bar_width / 2, bar_y + bar_height / 2);
 		canvas.drawBitmap(mBarBmp, srcBarRect, dstBarRect, null);
+		
+		if(isAPressed){
+			canvas.drawBitmap(mButtonBmp, srcButtonPressedA, dstButtonA,null);
+		}else{
+			canvas.drawBitmap(mButtonBmp, srcButtonA, dstButtonA,null);
+		}
+		if(isBPressed){
+			canvas.drawBitmap(mButtonBmp, srcButtonPressedB, dstButtonB,null);
+		}else{
+			canvas.drawBitmap(mButtonBmp, srcButtonB, dstButtonB,null);
+		}
 	}
 
 	public void logic() {
@@ -150,6 +199,7 @@ public class Controller {
 			
 			break;
 		case MotionEvent.ACTION_POINTER_UP:// 第二只手指抬起
+			
 			break;
 		}// end switch
 	}

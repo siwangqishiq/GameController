@@ -12,6 +12,13 @@ import com.xinlan.controller.MainView;
 import com.xinlan.controller.R;
 
 public class Controller {
+	public static final int TOUCH_NONE = 0;// 没有接触
+	public static final int ONLY_DIRECTION = 1;// 仅操作方向键
+	public static final int ONLY_BUTTON = 2;// 仅按钮键
+	public static final int BOTH_DIRECTION_BOTTON = 3;// 方向及按钮键
+
+	public static int status = TOUCH_NONE;
+
 	private MainView context;
 	private Box mBox;
 
@@ -28,8 +35,9 @@ public class Controller {
 	private RectF dstBottomRect, dstBarRect;
 	private RectF barBoundRect;// bar活动范围
 	private float barRadius, bottomRadius;
+	private float middleScreen;
 
-	private boolean isAPressed=false;
+	private boolean isAPressed = false;
 	private boolean isBPressed = false;
 	private int button_pad_right = 20;
 	private int button_pad_bottom = 30;
@@ -45,6 +53,7 @@ public class Controller {
 	public Controller(MainView context) {
 		this.context = context;
 		mBox = context.mBox;
+		middleScreen = MainView.screenW / 2;
 		mBottomBmp = BitmapFactory.decodeResource(context.getResources(),
 				R.drawable.controller_bottom);// 载入摇杆底座图片
 		mBarBmp = BitmapFactory.decodeResource(context.getResources(),
@@ -91,8 +100,8 @@ public class Controller {
 		buttonB_top = buttonB_y - buttonRadius;
 		dstButtonB = new RectF(buttonB_left, buttonB_top, buttonB_left
 				+ buttonWidth, buttonB_top + buttonWidth);
-		buttonA_x = buttonB_left - buttonRadius ;
-		buttonA_y = buttonB_top - buttonRadius ;
+		buttonA_x = buttonB_left - buttonRadius;
+		buttonA_y = buttonB_top - buttonRadius;
 		buttonA_left = buttonA_x - buttonRadius;
 		buttonA_top = buttonA_y - buttonRadius;
 		dstButtonA = new RectF(buttonA_left, buttonA_top, buttonA_left
@@ -104,16 +113,16 @@ public class Controller {
 		dstBarRect.set(bar_x - bar_width / 2, bar_y - bar_height / 2, bar_x
 				+ bar_width / 2, bar_y + bar_height / 2);
 		canvas.drawBitmap(mBarBmp, srcBarRect, dstBarRect, null);
-		
-		if(isAPressed){
-			canvas.drawBitmap(mButtonBmp, srcButtonPressedA, dstButtonA,null);
-		}else{
-			canvas.drawBitmap(mButtonBmp, srcButtonA, dstButtonA,null);
+
+		if (isAPressed) {
+			canvas.drawBitmap(mButtonBmp, srcButtonPressedA, dstButtonA, null);
+		} else {
+			canvas.drawBitmap(mButtonBmp, srcButtonA, dstButtonA, null);
 		}
-		if(isBPressed){
-			canvas.drawBitmap(mButtonBmp, srcButtonPressedB, dstButtonB,null);
-		}else{
-			canvas.drawBitmap(mButtonBmp, srcButtonB, dstButtonB,null);
+		if (isBPressed) {
+			canvas.drawBitmap(mButtonBmp, srcButtonPressedB, dstButtonB, null);
+		} else {
+			canvas.drawBitmap(mButtonBmp, srcButtonB, dstButtonB, null);
 		}
 	}
 
@@ -156,13 +165,77 @@ public class Controller {
 				}
 			}
 		}
-		if(isAPressed){
-			mBox.isAlpha=true;
+		if (isAPressed) {
+			mBox.isAlpha = true;
 		}
+
+		if (isBPressed) {
+			mBox.isAlpha = false;
+		}
+	}
+
+	/**
+	 * 
+	 * @param event
+	 */
+	public void onTouch(MotionEvent event) {
+		switch (status) {
+		case TOUCH_NONE:
+			noneTouch(event);
+			break;
+		case ONLY_DIRECTION:
+			onlyDirectionTouch(event);
+			break;
+		case ONLY_BUTTON:
+			onlyButtonTouch(event);
+			break;
+		case BOTH_DIRECTION_BOTTON:
+			bothDirectionAndButtonTouch(event);
+			break;
+		}
+	}
+
+	private void bothDirectionAndButtonTouch(MotionEvent event) {
+		float x1 = event.getX(0);
+		float y1 = event.getY(0);
+
+	}
+
+	private void onlyDirectionTouch(MotionEvent event) {
+		float x1 = event.getX(0);
+		float y1 = event.getY(0);
+
+	}
+
+	private void onlyButtonTouch(MotionEvent event) {
+		float x1 = event.getX(0);
+		float y1 = event.getY(0);
+
+	}
+
+	private void noneTouch(MotionEvent event) {
+		int count= event.getPointerCount();
+		float x1 = event.getX(0);
+		float y1 = event.getY(0);
 		
-		if(isBPressed){
-			mBox.isAlpha=false;
-		}
+//		System.out.println("x1="+x1+",y1="+y1+"   x2="+x2+",y2="+y2);
+		switch (MotionEventCompat.getActionMasked(event)) {
+		case MotionEvent.ACTION_DOWN:
+//			if (x1 < middleScreen) {
+//				status = ONLY_DIRECTION;
+//			} else {
+//				status = ONLY_BUTTON;
+//			}
+			break;
+		case MotionEvent.ACTION_MOVE:
+			break;
+		case MotionEvent.ACTION_UP:
+			break;
+		case MotionEvent.ACTION_POINTER_DOWN:// 第二只手指按下
+			break;
+		case MotionEvent.ACTION_POINTER_UP:// 第二只手指抬起
+			break;
+		}// end switch
 	}
 
 	/**
@@ -170,7 +243,7 @@ public class Controller {
 	 * 
 	 * @param event
 	 */
-	public void onTouch(MotionEvent event) {
+	public void onTouchs(MotionEvent event) {
 		float x1 = event.getX(0);
 		float y1 = event.getY(0);
 
@@ -182,16 +255,18 @@ public class Controller {
 				down_x = x1;
 				down_y = y1;
 			}
-			if(MathUtils.isInCircle(x1,y1,buttonA_x,buttonA_y,buttonRadius)){
+			if (MathUtils
+					.isInCircle(x1, y1, buttonA_x, buttonA_y, buttonRadius)) {
 				isAPressed = true;
 				break;
 			}
-			
-			if(MathUtils.isInCircle(x1,y1,buttonB_x,buttonB_y,buttonRadius)){
+
+			if (MathUtils
+					.isInCircle(x1, y1, buttonB_x, buttonB_y, buttonRadius)) {
 				isBPressed = true;
 				break;
 			}
-			
+
 			break;
 		case MotionEvent.ACTION_MOVE:
 			if (isBarFocus) {
@@ -211,15 +286,15 @@ public class Controller {
 			isBarFocus = false;
 			bar_x = bottom_x;
 			bar_y = bottom_y;
-			
+
 			isAPressed = false;
 			isBPressed = false;
 			break;
 		case MotionEvent.ACTION_POINTER_DOWN:// 第二只手指按下
-			
+
 			break;
 		case MotionEvent.ACTION_POINTER_UP:// 第二只手指抬起
-			
+
 			break;
 		}// end switch
 	}

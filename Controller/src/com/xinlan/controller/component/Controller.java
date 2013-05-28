@@ -118,12 +118,12 @@ public class Controller {
 	}
 
 	public void logic() {
+		if (mBox == null) {
+			mBox = context.mBox;
+		}
 		if (isBarFocus) {
 			float delta_y = bar_y - bottom_y;
 			float delta_x = bar_x - bottom_x;
-			if (mBox == null) {
-				mBox = context.mBox;
-			}
 			if (delta_y > -delta_x && delta_y > delta_x) {// 下方向
 				mBox.box_y += mBox.dy;
 			}
@@ -156,6 +156,13 @@ public class Controller {
 				}
 			}
 		}
+		if(isAPressed){
+			mBox.isAlpha=true;
+		}
+		
+		if(isBPressed){
+			mBox.isAlpha=false;
+		}
 	}
 
 	/**
@@ -175,6 +182,16 @@ public class Controller {
 				down_x = x1;
 				down_y = y1;
 			}
+			if(MathUtils.isInCircle(x1,y1,buttonA_x,buttonA_y,buttonRadius)){
+				isAPressed = true;
+				break;
+			}
+			
+			if(MathUtils.isInCircle(x1,y1,buttonB_x,buttonB_y,buttonRadius)){
+				isBPressed = true;
+				break;
+			}
+			
 			break;
 		case MotionEvent.ACTION_MOVE:
 			if (isBarFocus) {
@@ -194,6 +211,9 @@ public class Controller {
 			isBarFocus = false;
 			bar_x = bottom_x;
 			bar_y = bottom_y;
+			
+			isAPressed = false;
+			isBPressed = false;
 			break;
 		case MotionEvent.ACTION_POINTER_DOWN:// 第二只手指按下
 			

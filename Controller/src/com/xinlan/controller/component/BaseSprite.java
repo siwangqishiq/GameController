@@ -4,7 +4,7 @@ import com.xinlan.controller.MainView;
 import com.xinlan.controller.data.MapConstants;
 
 public class BaseSprite {
-	public static final float gravityDx = 5.0f;
+	public static final float gravityDx = 7.0f;
 
 	public final int SCREENW = MainView.screenW;
 	public final int SCREENH = MainView.screenH;
@@ -19,11 +19,14 @@ public class BaseSprite {
 
 	private int index_x, index_y;
 	private MainView context;
+	private int bound_x, bound_y;
 
 	public BaseSprite(MainView context) {
 		this.context = context;
 		cube_width = MainView.screenW / X_MAX;
 		cube_height = MainView.screenH / Y_MAX;
+		bound_x = X_MAX - 1;
+		bound_y = Y_MAX - 1;
 	}
 
 	public void logic() {
@@ -32,17 +35,19 @@ public class BaseSprite {
 		if (index_x < 0)
 			index_x = 0;
 		if (index_x >= Y_MAX)
-			index_x = Y_MAX - 1;
+			index_x = bound_y;
 		if (index_y < 0)
 			index_y = 0;
 		if (index_y > X_MAX)
-			index_y = X_MAX - 1;
-//		System.out.println(index_x + "," + index_y + "-->"
-//				+ mapData[index_y][index_x]);
+			index_y = bound_x;
+		// System.out.println(index_x + "," + index_y + "-->"
+		// + mapData[index_y][index_x]);
 		doGravity();
 	}
 
 	private void doGravity() {
-
+		if(mapData[index_y+1][index_x]==0){
+			y+=gravityDx;//º”‘ÿ÷ÿ¡¶
+		}
 	}
 }// end class

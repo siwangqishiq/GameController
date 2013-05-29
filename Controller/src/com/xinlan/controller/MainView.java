@@ -28,8 +28,8 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 	public static int GAME_STATE = 1;
 
 	// public Background mBackground;
-	public static final int X_MAX = 40;
-	public static final int Y_MAX = 24;
+	public static final int X_MAX = 20;
+	public static final int Y_MAX = 12;
 	
 	public Map mMap;
 	public Box mBox;

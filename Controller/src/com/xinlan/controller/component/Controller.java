@@ -130,6 +130,7 @@ public class Controller {
 	}
 
 	public void logic() {
+		//StringBuffer sb = new StringBuffer();
 		if (mBox == null) {
 			mBox = context.mBox;
 		}
@@ -137,42 +138,53 @@ public class Controller {
 			float delta_y = bar_y - bottom_y;
 			float delta_x = bar_x - bottom_x;
 			if (delta_y > -delta_x && delta_y > delta_x) {// 下方向
+				//sb.append("下");
 				mBox.box_y += mBox.dy;
 			}
 			if (delta_y < -(delta_x) && delta_y > delta_x) {// 左方向
+				//sb.append("左");
 				mBox.box_x -= mBox.dx;
 			}
 			if (delta_y < -delta_x && delta_y < delta_x) {// 上方向
+				//sb.append("上");
 				mBox.box_y -= mBox.dy;
 			}
 			if (delta_y > -delta_x && delta_y < delta_x) {// 右
+				//sb.append("右");
 				mBox.box_x += mBox.dx;
 			}
 			// 斜边情况
 			if (delta_y == delta_x) {
-				if (delta_x > 0) {
+				if (delta_x > 0) {//右下
+					//sb.append("右下");
 					mBox.box_x += mBox.dx;
 					mBox.box_y += mBox.dy;
-				} else if (delta_x < 0) {
+				} else if (delta_x < 0) {//左上
+					//sb.append("左上");
 					mBox.box_x -= mBox.dx;
 					mBox.box_y -= mBox.dy;
 				}
 			}
 			if (delta_y == -delta_x) {
-				if (delta_x > 0) {
+				if (delta_x > 0) {//
+					//sb.append("右上");
 					mBox.box_x += mBox.dx;
 					mBox.box_y -= mBox.dy;
 				} else if (delta_x < 0) {
+					//sb.append("左下");
 					mBox.box_x -= mBox.dx;
 					mBox.box_y += mBox.dy;
 				}
 			}
 		}
 		if (isAPressed) {
+			//sb.append(" A键");
 		}
 
 		if (isBPressed) {
+			//sb.append(" B键");
 		}
+		//System.out.println(sb.toString());
 	}
 
 	public void onTouch(MotionEvent event) {
@@ -188,9 +200,9 @@ public class Controller {
 	private void OneFinger(MotionEvent event) {
 		float x1 = event.getX(0);
 		float y1 = event.getY(0);
-
+		int motionStatus = MotionEventCompat.getActionMasked(event);
 		if (x1 < screenMiddle) {// 方向
-			switch (MotionEventCompat.getActionMasked(event)) {
+			switch (motionStatus) {
 			case MotionEvent.ACTION_DOWN:
 				if (MathUtils.isInCircle(x1, y1, dstBarRect.centerX(),
 						dstBarRect.centerY(), barRadius)) {
@@ -223,8 +235,7 @@ public class Controller {
 			isBarFocus = false;
 			bar_x = bottom_x;
 			bar_y = bottom_y;
-			
-			switch (MotionEventCompat.getActionMasked(event)) {
+			switch (motionStatus) {
 			case MotionEvent.ACTION_DOWN:
 				if (dstButtonA.contains(x1, y1)) {
 					isBPressed = false;
@@ -248,9 +259,9 @@ public class Controller {
 		float y1 = event.getY(0);
 		float x2 = event.getX(1);
 		float y2 = event.getY(1);
-
+		int motionStatus = MotionEventCompat.getActionMasked(event);
 		if (x1 < screenMiddle) {
-			switch (MotionEventCompat.getActionMasked(event)) {
+			switch (motionStatus) {
 			case MotionEvent.ACTION_MOVE:
 				if (isBarFocus) {
 					bar_x = bottom_x + (x1 - down_x);
@@ -274,7 +285,7 @@ public class Controller {
 					isBPressed = true;
 					isAPressed = false;
 				}
-				
+
 				if (MathUtils.isInCircle(x2, y2, dstBarRect.centerX(),
 						dstBarRect.centerY(), barRadius)) {
 					isBarFocus = true;
@@ -283,16 +294,14 @@ public class Controller {
 				}
 				break;
 			case MotionEvent.ACTION_POINTER_UP:
-				//System.out.println("11111-->"+x1+","+y1+"      x2="+event.getX(1)+",y2="+event.getY(1));
-				
 				isBPressed = false;
 				isAPressed = false;
+
 				break;
 			}// end switch
 		} else {
 			// x2,y2为方向操控
-			System.out.println("方向操控@");
-			switch (MotionEventCompat.getActionMasked(event)) {
+			switch (motionStatus) {
 			case MotionEvent.ACTION_MOVE:
 				if (isBarFocus) {
 					bar_x = bottom_x + (x2 - down_x);
@@ -307,6 +316,7 @@ public class Controller {
 						bar_y = barBoundRect.bottom;
 				}
 				break;
+
 			case MotionEvent.ACTION_POINTER_DOWN:
 				if (dstButtonA.contains(x1, y1)) {
 					isBPressed = false;
@@ -316,7 +326,7 @@ public class Controller {
 					isBPressed = true;
 					isAPressed = false;
 				}
-				
+
 				if (MathUtils.isInCircle(x2, y2, dstBarRect.centerX(),
 						dstBarRect.centerY(), barRadius)) {
 					isBarFocus = true;
@@ -325,71 +335,10 @@ public class Controller {
 				}
 				break;
 			case MotionEvent.ACTION_POINTER_UP:
-				
 				isBPressed = false;
 				isAPressed = false;
 				break;
 			}// end switch
 		}
-	}
-
-	/**
-	 * 触摸事件处理
-	 * 
-	 * @param event
-	 */
-	public void onTouchs(MotionEvent event) {
-		float x1 = event.getX(0);
-		float y1 = event.getY(0);
-
-		switch (MotionEventCompat.getActionMasked(event)) {
-		case MotionEvent.ACTION_DOWN:
-			if (MathUtils.isInCircle(x1, y1, dstBarRect.centerX(),
-					dstBarRect.centerY(), barRadius)) {
-				isBarFocus = true;
-				down_x = x1;
-				down_y = y1;
-			}
-			if (MathUtils
-					.isInCircle(x1, y1, buttonA_x, buttonA_y, buttonRadius)) {
-				isAPressed = true;
-				break;
-			}
-
-			if (MathUtils
-					.isInCircle(x1, y1, buttonB_x, buttonB_y, buttonRadius)) {
-				isBPressed = true;
-				break;
-			}
-
-			break;
-		case MotionEvent.ACTION_MOVE:
-			if (isBarFocus) {
-				bar_x = bottom_x + (x1 - down_x);
-				bar_y = bottom_y + (y1 - down_y);
-				if (bar_x > barBoundRect.right)
-					bar_x = barBoundRect.right;
-				if (bar_x < barBoundRect.left)
-					bar_x = barBoundRect.left;
-				if (bar_y < barBoundRect.top)
-					bar_y = barBoundRect.top;
-				if (bar_y > barBoundRect.bottom)
-					bar_y = barBoundRect.bottom;
-			}
-			break;
-		case MotionEvent.ACTION_UP:
-			isBarFocus = false;
-			bar_x = bottom_x;
-			bar_y = bottom_y;
-
-			isAPressed = false;
-			isBPressed = false;
-			break;
-		case MotionEvent.ACTION_POINTER_DOWN:// 第二只手指按下
-			break;
-		case MotionEvent.ACTION_POINTER_UP:// 第二只手指抬起
-
-			break;
-		}// end switch
 	}
 }// end class

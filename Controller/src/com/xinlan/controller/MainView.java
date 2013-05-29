@@ -90,6 +90,7 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 
 	public void logic() {
 		// mBackground.logic();
+		mBox.logic();
 		mController.logic();
 	}
 

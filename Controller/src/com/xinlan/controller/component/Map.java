@@ -79,5 +79,8 @@ public class Map {
 	public void draw(Canvas canvas) {
 		canvas.drawBitmap(mapBitmap, srcMap, dstMap, null);
 	}
-
+	
+	public void logic(){
+		
+	}
 }// end class

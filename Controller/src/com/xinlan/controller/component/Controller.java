@@ -129,7 +129,7 @@ public class Controller {
 	}
 
 	public void logic() {
-		//StringBuffer sb = new StringBuffer();
+		// StringBuffer sb = new StringBuffer();
 		if (mBox == null) {
 			mBox = context.mBox;
 		}
@@ -137,53 +137,65 @@ public class Controller {
 			float delta_y = bar_y - bottom_y;
 			float delta_x = bar_x - bottom_x;
 			if (delta_y > -delta_x && delta_y > delta_x) {// 下方向
-				//sb.append("下");
-				mBox.box_y += mBox.dy;
+				// sb.append("下");
+				// mBox.box_y += mBox.dy;
+				mBox.dy = mBox.speed;
 			}
 			if (delta_y < -(delta_x) && delta_y > delta_x) {// 左方向
-				//sb.append("左");
-				mBox.box_x -= mBox.dx;
+				// sb.append("左");
+				// mBox.box_x -= mBox.dx;
+				mBox.dx = -mBox.speed;
 			}
 			if (delta_y < -delta_x && delta_y < delta_x) {// 上方向
-				//sb.append("上");
-				mBox.box_y -= mBox.dy;
+				// sb.append("上");
+				// mBox.box_y -= mBox.dy;
+				mBox.dy = -mBox.speed;
 			}
 			if (delta_y > -delta_x && delta_y < delta_x) {// 右
-				//sb.append("右");
-				mBox.box_x += mBox.dx;
+				// sb.append("右");
+				// mBox.box_x += mBox.dx;
+				mBox.dx = mBox.speed;
 			}
 			// 斜边情况
 			if (delta_y == delta_x) {
-				if (delta_x > 0) {//右下
-					//sb.append("右下");
-					mBox.box_x += mBox.dx;
-					mBox.box_y += mBox.dy;
-				} else if (delta_x < 0) {//左上
-					//sb.append("左上");
-					mBox.box_x -= mBox.dx;
-					mBox.box_y -= mBox.dy;
+				if (delta_x > 0) {// 右下
+					// sb.append("右下");
+					// mBox.box_x += mBox.dx;
+					// mBox.box_y += mBox.dy;
+					mBox.dx = mBox.speed;
+					mBox.dy = mBox.speed;
+				} else if (delta_x < 0) {// 左上
+					// sb.append("左上");
+					// mBox.box_x -= mBox.dx;
+					// mBox.box_y -= mBox.dy;
+					mBox.dx = -mBox.speed;
+					mBox.dy = -mBox.speed;
 				}
 			}
 			if (delta_y == -delta_x) {
 				if (delta_x > 0) {//
-					//sb.append("右上");
-					mBox.box_x += mBox.dx;
-					mBox.box_y -= mBox.dy;
+					// sb.append("右上");
+					// mBox.box_x += mBox.dx;
+					// mBox.box_y -= mBox.dy;
+					mBox.dx = mBox.speed;
+					mBox.dy = -mBox.speed;
 				} else if (delta_x < 0) {
-					//sb.append("左下");
-					mBox.box_x -= mBox.dx;
-					mBox.box_y += mBox.dy;
+					// sb.append("左下");
+					// mBox.box_x -= mBox.dx;
+					// mBox.box_y += mBox.dy;
+					mBox.dx = -mBox.speed;
+					mBox.dy = mBox.speed;
 				}
 			}
 		}
 		if (isAPressed) {
-			//sb.append(" A键");
+			// sb.append(" A键");
 		}
 
 		if (isBPressed) {
-			//sb.append(" B键");
+			// sb.append(" B键");
 		}
-		//System.out.println(sb.toString());
+		// System.out.println(sb.toString());
 	}
 
 	public void onTouch(MotionEvent event) {
@@ -257,7 +269,7 @@ public class Controller {
 		float y1 = event.getY(0);
 		float x2 = event.getX(1);
 		float y2 = event.getY(1);
-		if(Math.abs(x1-x2)<100){
+		if (Math.abs(x1 - x2) < 100) {
 			isBPressed = false;
 			isAPressed = false;
 			return;

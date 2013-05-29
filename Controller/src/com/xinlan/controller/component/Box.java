@@ -9,44 +9,37 @@ import android.graphics.RectF;
 import com.xinlan.controller.MainView;
 import com.xinlan.controller.R;
 
-public class Box {
+public class Box extends BaseSprite {
 	private MainView context;
-	public float dx, dy;
-	public float width, height;
-
 	private Bitmap mBoxBmp;
-	public float box_x, box_y;
-	
 	private Rect srcRect;
 	private RectF dstRect;
-	
-	public boolean isAlpha=false;
-	
-	private int alpha=255;
 	private Paint paint;
-	
+	public float speed = 3f;
+
 	public Box(MainView context) {
 		this.context = context;
 		mBoxBmp = BitmapFactory.decodeResource(context.getResources(),
 				R.drawable.ic_launcher);
-		box_x = MainView.screenW / 2;
-		box_y = MainView.screenH / 2;
-
-		width = mBoxBmp.getWidth();
-		height = mBoxBmp.getHeight();
-
+		x = 100;
+		y = 100;
+		width = 50;
+		height = 50;
 		srcRect = new Rect(0, 0, mBoxBmp.getWidth(), mBoxBmp.getHeight());
-		dstRect = new RectF(box_x, box_y, box_x + width, box_y + height);
-
-		dx = dy = 2f;
-		paint =new Paint();
-		paint.setAlpha(alpha);
+		dstRect = new RectF(x, y, x + width, y + height);
 	}
 
 	public void draw(Canvas canvas) {
-		canvas.save();
-		dstRect.set(box_x, box_y, box_x + width, box_y + height);
+		dstRect.set(x, y, x + width, y + height);
 		canvas.drawBitmap(mBoxBmp, srcRect, dstRect, paint);
-		canvas.restore();
+	}
+
+	public void logic() {
+		super.logic();
+		x += dx;
+		y += dy;
+		//Æ«ÒÆÁ¿¹éÁã
+		dx = 0;
+		dy = 0;
 	}
 }// end class

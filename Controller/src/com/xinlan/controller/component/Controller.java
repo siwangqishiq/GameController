@@ -68,7 +68,6 @@ public class Controller {
 		bottom_width = bottom_height = cube_len / 3;// 设定底座高度与宽度
 		buttonWidth = bar_width = bar_height = bottom_width / 2;// 摇杆宽高
 																// 与底座按1:2的比例
-
 		// 源图像矩形
 		srcBottomRect = new Rect(0, 0, mBottomBmp.getWidth(),
 				mBottomBmp.getHeight());
@@ -194,7 +193,6 @@ public class Controller {
 		} else {// ==2
 			MoreFingers(event);
 		}
-
 	}
 
 	private void OneFinger(MotionEvent event) {
@@ -259,6 +257,11 @@ public class Controller {
 		float y1 = event.getY(0);
 		float x2 = event.getX(1);
 		float y2 = event.getY(1);
+		if(Math.abs(x1-x2)<100){
+			isBPressed = false;
+			isAPressed = false;
+			return;
+		}
 		int motionStatus = MotionEventCompat.getActionMasked(event);
 		if (x1 < screenMiddle) {
 			switch (motionStatus) {

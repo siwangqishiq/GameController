@@ -1,5 +1,7 @@
 package com.xinlan.controller.component;
 
+import android.graphics.RectF;
+
 public class MathUtils {
 	/**
 	 * 判断指定点是否在圆内
@@ -30,4 +32,13 @@ public class MathUtils {
 		}
 		return false;
 	}
-}//end class
+
+	public static boolean isInRect(float x, float y, float rectLeft,
+			float rectTop, float width, float height) {
+		if (x > rectLeft && x < rectLeft + width && y > rectTop
+				&& y < rectTop + height) {
+			return true;
+		}
+		return false;
+	}
+}// end class

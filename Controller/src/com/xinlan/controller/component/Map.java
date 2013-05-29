@@ -16,7 +16,7 @@ public class Map {
 	public static final int MAP_CUBE2 = 2;
 
 	private MainView context;
-	private char[][] data = MapConstants.map1;
+	private byte[][] data = MapConstants.map1;
 
 	private Bitmap mapBitmap;
 

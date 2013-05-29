@@ -18,6 +18,7 @@ public class Box extends BaseSprite {
 	public float speed = 3f;
 
 	public Box(MainView context) {
+		super(context);
 		this.context = context;
 		mBoxBmp = BitmapFactory.decodeResource(context.getResources(),
 				R.drawable.ic_launcher);
@@ -33,7 +34,7 @@ public class Box extends BaseSprite {
 		dstRect.set(x, y, x + width, y + height);
 		canvas.drawBitmap(mBoxBmp, srcRect, dstRect, paint);
 	}
-
+	
 	public void logic() {
 		super.logic();
 		x += dx;

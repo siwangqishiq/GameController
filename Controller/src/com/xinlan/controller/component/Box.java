@@ -25,7 +25,7 @@ public class Box extends BaseSprite {
 		x = 50;
 		y = 100;
 		width = 50;
-		height = 50;
+		height = 100;
 		srcRect = new Rect(0, 0, mBoxBmp.getWidth(), mBoxBmp.getHeight());
 		dstRect = new RectF(x, y, x + width, y + height);
 	}

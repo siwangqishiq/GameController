@@ -30,6 +30,8 @@ public class Map {
 	public float cube_height;
 	private Rect srcMap;
 	private RectF dstMap;
+	
+	private int frame;
 
 	public Map(MainView context) {
 		this.context = context;
@@ -77,7 +79,10 @@ public class Map {
 	}
 
 	public void draw(Canvas canvas) {
-		canvas.drawBitmap(mapBitmap, srcMap, dstMap, null);
+		if(frame<=1){
+			canvas.drawBitmap(mapBitmap, srcMap, dstMap, null);
+			frame++;
+		}
 	}
 	
 	public void logic(){

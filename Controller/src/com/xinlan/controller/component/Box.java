@@ -22,7 +22,7 @@ public class Box extends BaseSprite {
 		this.context = context;
 		mBoxBmp = BitmapFactory.decodeResource(context.getResources(),
 				R.drawable.ic_launcher);
-		x = 100;
+		x = 50;
 		y = 100;
 		width = 50;
 		height = 50;
@@ -36,10 +36,10 @@ public class Box extends BaseSprite {
 	}
 	
 	public void logic() {
-		super.logic();
 		x += dx;
 		y += dy;
-		//Æ«ÒÆÁ¿¹éÁã
+		super.logic();
+		//reset
 		dx = 0;
 		dy = 0;
 	}
